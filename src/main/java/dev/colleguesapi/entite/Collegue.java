@@ -11,6 +11,10 @@ public class Collegue {
 	
 	
 	
+	public Collegue() {
+		super();
+	}
+
 	public Collegue(String name, String firstname, String birthdate) {
 		super();
 		this.name = name;

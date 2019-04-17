@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import dev.colleguesapi.entite.Collegue;
+import dev.colleguesapi.exception.CollegueNotFoundException;
 
 public class CollegueService {
 
@@ -34,7 +35,7 @@ public class CollegueService {
 		data.put(col3.getMatricule(), col3);
 	}
 	
-	public List<Collegue> findByName(String findName) {
+	public List<Collegue> findByName(String findName) throws Exception {
 		
 		List<Collegue> resultList = new ArrayList<>();
 		
@@ -42,9 +43,34 @@ public class CollegueService {
 			if (mapentry.getValue().getName().equalsIgnoreCase(findName))
 				resultList.add(mapentry.getValue());
 		}
+		if(resultList == null || resultList.isEmpty()) {
+			throw new CollegueNotFoundException("Sorry but there's no collegue with such a name");
+		}else{return resultList;}
+	}
+	
+	public Collegue findByMatricule(String findMatricule) throws Exception {
 		
-		return resultList;
+		Collegue result = data.get(findMatricule);
+		
+		if(result == null) {
+			throw new CollegueNotFoundException("Sorry but there's no collegue with such a matricule");
+		}else{return result;}
+		
 		
 	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
