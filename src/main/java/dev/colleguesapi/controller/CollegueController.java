@@ -1,5 +1,6 @@
 package dev.colleguesapi.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +18,13 @@ public class CollegueController {
 	CollegueService service = new CollegueService();
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public List<Collegue> listCollegues(@RequestParam(value= "name") String name) {
+	public List<String> listCollegues(@RequestParam(value= "name") String name) {
 		
-		return service.findByName(name);
-				
+		List<String> result = new ArrayList<>();
+		for(Collegue c: service.findByName(name)) {
+			result.add(c.getMatricule());
+		}
+		return result;
 		
 	}
 	
