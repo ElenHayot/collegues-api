@@ -2,18 +2,19 @@ package dev.colleguesapi.service;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 import dev.colleguesapi.entite.Collegue;
 import dev.colleguesapi.exception.CollegueNotFoundException;
 import dev.colleguesapi.exception.InsertException;
-import dev.colleguesapi.exception.InvalidCollegueException;
 
+@Service
 public class CollegueService {
 
 	private Map<String, Collegue> data = new HashMap<>();

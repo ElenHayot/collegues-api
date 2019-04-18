@@ -3,6 +3,7 @@ package dev.colleguesapi.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,11 +22,11 @@ import dev.colleguesapi.service.CollegueService;
 @RequestMapping("/collegues")
 public class CollegueController {
 
-	CollegueService service = new CollegueService();
+	@Autowired
+	private CollegueService service;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> listCollegues(@RequestParam(value= "name") String name) throws Exception {
-		
 		try{List<String> result = new ArrayList<>();
 			for(Collegue c: service.findByName(name)) {
 				result.add(c.getMatricule());
