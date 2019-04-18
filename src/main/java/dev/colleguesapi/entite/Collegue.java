@@ -1,12 +1,14 @@
 package dev.colleguesapi.entite;
 
+import java.time.LocalDate;
+
 public class Collegue {
 
 	private String matricule;
 	private String name;
 	private String firstname;
 	private String email;
-	private String birthdate;
+	private LocalDate birthdate;
 	private String photoUrl;
 	
 	
@@ -15,11 +17,13 @@ public class Collegue {
 		super();
 	}
 
-	public Collegue(String name, String firstname, String birthdate) {
+	public Collegue(String name, String firstname, LocalDate birthdate, String email, String photoUrl) {
 		super();
 		this.name = name;
 		this.firstname = firstname;
 		this.birthdate = birthdate;
+		this.email = email;
+		this.photoUrl = photoUrl;
 	}
 	
 	public String getMatricule() {
@@ -46,10 +50,10 @@ public class Collegue {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getBirthdate() {
+	public LocalDate getBirthdate() {
 		return birthdate;
 	}
-	public void setBirthdate(String birthdate) {
+	public void setBirthdate(LocalDate birthdate) {
 		this.birthdate = birthdate;
 	}
 	public String getPhotoUrl() {

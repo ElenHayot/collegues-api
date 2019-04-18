@@ -1,34 +1,33 @@
 package dev.colleguesapi.service;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import dev.colleguesapi.entite.Collegue;
 import dev.colleguesapi.exception.CollegueNotFoundException;
+import dev.colleguesapi.exception.InsertException;
+import dev.colleguesapi.exception.InvalidCollegueException;
 
 public class CollegueService {
 
 	private Map<String, Collegue> data = new HashMap<>();
+	private LocalDate now = LocalDate.now();
 	
 	public CollegueService() {
 		
-		Collegue col1 = new Collegue("Raph", "Rojies", "21/12/2012");
-		Collegue col2 = new Collegue("juju", "francois", "13/11/1998");
-		Collegue col3 = new Collegue("Son", "David", "07/07/1977");
-		
-		col1.setEmail(col1.getFirstname() + col1.getName() + "@society.com");
-		col2.setEmail(col2.getFirstname() + col2.getName() + "@society.com");
-		
+		Collegue col1 = new Collegue("Raph", "Rojies", LocalDate.of(2012, 06, 30), "rojies.raph@society.com", "http://photopath/photo");
+		Collegue col2 = new Collegue("juju", "francois", LocalDate.of(1994, 07, 07), "franc.juju@society.com", "photopath/photo");
+		Collegue col3 = new Collegue("Son", "David", LocalDate.of(1987, 04, 21), "davidson@society.com", "http://photopath/photo");
+				
 		col1.setMatricule(UUID.randomUUID().toString());
 		col2.setMatricule(UUID.randomUUID().toString());
 		col3.setMatricule(UUID.randomUUID().toString());
-		
-		col1.setPhotoUrl("URLphoto1");
-		col2.setPhotoUrl("URLphoto2");
 		
 		data.put(col1.getMatricule(), col1);
 		data.put(col2.getMatricule(), col2);
@@ -58,6 +57,52 @@ public class CollegueService {
 		
 		
 	}
+	
+	public void addCollegue(Collegue addCollegue) throws Exception {
+		
+		Period period = Period.between(addCollegue.getBirthdate(), now);
+		
+		if(addCollegue.getName().length() < 3) {
+			throw new InsertException("The name may contain more than 3 characters");
+		}else if(addCollegue.getFirstname().length() < 3) {
+			throw new InsertException("The firstname may contain more than 3 characters");
+		}else if(!addCollegue.getEmail().contains("@")){
+			throw new InsertException("Please enter a convenient email adress (with a @ character)");
+		}else if(!addCollegue.getPhotoUrl().startsWith("http")) {
+			throw new InsertException("Please enter a URL path for the photo (http://...)");
+		}else if(period.getYears() <18) {
+			throw new InsertException("Sorry but you must be more than 18 to access");
+		}else {
+			addCollegue.setMatricule(UUID.randomUUID().toString());
+			data.put(addCollegue.getMatricule(), addCollegue);
+		}
+		
+	}
+	
+	
+	public void updateEmail(String matricule, String newEmail) throws Exception {
+		
+		Collegue collegue = findByMatricule(matricule);
+		if(!newEmail.contains("@")){
+			throw new InsertException("Please enter a convenient email adress (with a @ character)");
+		}else {
+			collegue.setEmail(newEmail);
+		}
+		
+	}
+	
+	
+	public void updatePhotoUrl(String matricule, String newPhotoUrl) throws Exception {
+		
+		Collegue collegue = findByMatricule(matricule);
+		if(!newPhotoUrl.startsWith("http://")){
+			throw new InsertException("Please enter a URL path for the photo (http://...)");
+		}else {
+			collegue.setPhotoUrl(newPhotoUrl);
+		}
+		
+	}
+	
 	
 }
 
