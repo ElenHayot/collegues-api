@@ -7,12 +7,17 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 
 import dev.colleguesapi.entite.Collegue;
 import dev.colleguesapi.exception.CollegueNotFoundException;
 import dev.colleguesapi.exception.InsertException;
 import dev.colleguesapi.service.CollegueService;
 
+@SpringBootTest
 public class CollegueServiceTest {
 	
 	@Rule public ExpectedException expectedEx = ExpectedException.none();
@@ -22,7 +27,7 @@ public class CollegueServiceTest {
 	public void testAddCollegueWithBadName() throws Exception {
 		
 		expectedEx.expect(InsertException.class);
-		expectedEx.expectMessage("The name may contain");
+		expectedEx.expectMessage("Please enter a name that contains");
 		
 		
 		CollegueService collegueService = new CollegueService();
@@ -34,7 +39,7 @@ public class CollegueServiceTest {
 	public void testAddCollegueWithBadFirstname() throws Exception {
 		
 		expectedEx.expect(InsertException.class);
-		expectedEx.expectMessage("The firstname may contain");
+		expectedEx.expectMessage("Please enter a firstname that contains");
 		
 		CollegueService collegueService = new CollegueService();
 		Collegue addCollegue = new Collegue("Raph", "rf", LocalDate.of(1966, 06, 30), "rojies.raph@society.com", "http://photopath/photo");
@@ -71,6 +76,18 @@ public class CollegueServiceTest {
 		
 		CollegueService collegueService = new CollegueService();
 		Collegue addCollegue = new Collegue("Raph", "klouklou", LocalDate.of(2002, 06, 30), "rojies.raph@society.com", "http://photopath/photo");
+		collegueService.addCollegue(addCollegue);
+	}
+	
+	@Test
+	public void testAddCollegueWithoutBirthdate() throws Exception {
+		
+		expectedEx.expect(InsertException.class);
+		expectedEx.expectMessage("Please enter a birthdate");
+		
+		LocalDate nullDate = null;
+		CollegueService collegueService = new CollegueService();
+		Collegue addCollegue = new Collegue("Raph", "klouklou", nullDate, "rojies.raph@society.com", "http://photopath/photo");
 		collegueService.addCollegue(addCollegue);
 	}
 	

@@ -61,17 +61,18 @@ public class CollegueService {
 	
 	public void addCollegue(Collegue addCollegue) throws Exception {
 		
-		Period period = Period.between(addCollegue.getBirthdate(), now);
 		
 		if(addCollegue.getName().length() < 3) {
-			throw new InsertException("The name may contain more than 3 characters");
+			throw new InsertException("Please enter a name that contains more than 3 characters");
 		}else if(addCollegue.getFirstname().length() < 3) {
-			throw new InsertException("The firstname may contain more than 3 characters");
+			throw new InsertException("Please enter a firstname that contains more than 3 characters");
 		}else if(!addCollegue.getEmail().contains("@")){
 			throw new InsertException("Please enter a convenient email adress (with a @ character)");
 		}else if(!addCollegue.getPhotoUrl().startsWith("http")) {
 			throw new InsertException("Please enter a URL path for the photo (http://...)");
-		}else if(period.getYears() <18) {
+		}else if(addCollegue.getBirthdate() == null) {
+			throw new InsertException("Please enter a birthdate");
+		}else if(Period.between(addCollegue.getBirthdate(), now).getYears() < 18){
 			throw new InsertException("Sorry but you must be more than 18 to access");
 		}else {
 			addCollegue.setMatricule(UUID.randomUUID().toString());
