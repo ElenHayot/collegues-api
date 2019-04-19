@@ -28,7 +28,7 @@ public class CollegueController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> listCollegues(@RequestParam(value= "name") String name) throws Exception {
 		try{List<String> result = new ArrayList<>();
-			for(Collegue c: service.findByName(name)) {
+			for(Collegue c: service.findCollegueByName(name)) {
 				result.add(c.getMatricule());
 			}
 			return ResponseEntity.ok(result);
@@ -42,7 +42,7 @@ public class CollegueController {
 	public  ResponseEntity<?> collegueByMatricule(@PathVariable String matricule) throws Exception {
 		
 		try {
-			return ResponseEntity.ok(service.findByMatricule(matricule));
+			return ResponseEntity.ok(service.findCollegueByMatricule(matricule));
 		}catch(CollegueNotFoundException e){
 			return ResponseEntity.status(404).body(e.getMessage());
 		}
