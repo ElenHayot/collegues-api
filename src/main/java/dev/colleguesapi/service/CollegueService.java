@@ -38,7 +38,7 @@ public class CollegueService {
 	
 	public List<Collegue> findCollegueByName(String findName) throws Exception {
 		
-		List<Collegue> collegueFound = repo.findByName(findName);
+		List<Collegue> collegueFound = repo.findByName(findName.toUpperCase());
 		if(collegueFound == null || collegueFound.isEmpty()) {
 			throw new CollegueNotFoundException("Sorry but there's no collegue with such a name");
 		}else{return collegueFound;}

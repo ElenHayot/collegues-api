@@ -1,18 +1,12 @@
 package dev.colleguesapi.test;
 
 import java.time.LocalDate;
-import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 
 import dev.colleguesapi.entite.Collegue;
 import dev.colleguesapi.exception.CollegueNotFoundException;
