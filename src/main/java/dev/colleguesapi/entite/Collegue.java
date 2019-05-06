@@ -20,7 +20,7 @@ public class Collegue {
 	private String email;
 	@Column (name = "BIRTHDATE")
 	private LocalDate birthdate;
-	@Column (name = "PHOTOURL")
+	@Column (name = "PHOTOURL", length=500)
 	private String photoUrl;
 	
 	

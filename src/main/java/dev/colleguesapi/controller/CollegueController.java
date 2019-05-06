@@ -67,17 +67,15 @@ public class CollegueController {
 	public ResponseEntity<?> updatingEmail(@PathVariable String matricule, @RequestBody CollegueToUpdate  updatingCollegue) throws Exception {
 		
 		try {
-			if(updatingCollegue.getPhotoUrl() != null){
+			if(updatingCollegue.getPhotoUrl() != null && updatingCollegue.getEmail() != null){
 				service.updatePhotoUrl(matricule, updatingCollegue.getPhotoUrl());
-				return ResponseEntity.ok("The collegue's photo is up to date!");
-				
-			}else if(updatingCollegue.getEmail() != null){
 				service.updateEmail(matricule, updatingCollegue.getEmail());
-				return ResponseEntity.ok("The collegue's mail is up to date!");
+				return ResponseEntity.ok("The colleague's profile is up to date!");
 				
-			} else {
+			}else {
 				return ResponseEntity.status(400).body("Please enter the argument you want to update");
 			}
+			
 		}catch(CollegueNotFoundException | InsertException e) {
 			return ResponseEntity.status(400).body(e.getMessage());
 		}

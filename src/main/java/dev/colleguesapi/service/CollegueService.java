@@ -91,7 +91,7 @@ public class CollegueService {
 	public void updatePhotoUrl(String matricule, String newPhotoUrl) throws Exception {
 		
 		Collegue collegue = findCollegueByMatricule(matricule);
-		if(!newPhotoUrl.startsWith("http://")){
+		if(!newPhotoUrl.startsWith("http")){
 			throw new InsertException("Please enter a URL path for the photo (http://...)");
 		}else {
 			collegue.setPhotoUrl(newPhotoUrl);
