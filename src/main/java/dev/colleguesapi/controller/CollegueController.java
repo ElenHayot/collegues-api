@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import dev.colleguesapi.service.CollegueService;
 
 @RestController
 @RequestMapping("/collegues")
+@CrossOrigin
 public class CollegueController {
 
 	@Autowired
@@ -28,7 +30,7 @@ public class CollegueController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<?> listCollegues(@RequestParam(value= "name") String name) throws Exception {
 		try{List<String> result = new ArrayList<>();
-			for(Collegue c: service.findByName(name)) {
+			for(Collegue c: service.findCollegueByName(name)) {
 				result.add(c.getMatricule());
 			}
 			return ResponseEntity.ok(result);
@@ -42,11 +44,21 @@ public class CollegueController {
 	public  ResponseEntity<?> collegueByMatricule(@PathVariable String matricule) throws Exception {
 		
 		try {
-			return ResponseEntity.ok(service.findByMatricule(matricule));
+			return ResponseEntity.ok(service.findCollegueByMatricule(matricule));
 		}catch(CollegueNotFoundException e){
 			return ResponseEntity.status(404).body(e.getMessage());
 		}
 		
+	}
+	
+	@RequestMapping(value ="/photos", method = RequestMethod.GET)
+	public ResponseEntity<?> showPhotos() throws Exception {
+		
+		try {
+			return ResponseEntity.ok(service.sendPhoto());
+		}catch(Exception e){
+			return ResponseEntity.status(404).body(e.getMessage());
+		}
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -54,7 +66,7 @@ public class CollegueController {
 		
 		try{
 			service.addCollegue(addCollegue);
-			return ResponseEntity.ok("A new collegue has been saved with success!");
+			return ResponseEntity.ok(addCollegue);
 		}catch(InsertException e) {
 			return ResponseEntity.status(400).body(e.getMessage());
 		}
@@ -65,17 +77,15 @@ public class CollegueController {
 	public ResponseEntity<?> updatingEmail(@PathVariable String matricule, @RequestBody CollegueToUpdate  updatingCollegue) throws Exception {
 		
 		try {
-			if(updatingCollegue.getPhotoUrl() != null){
+			if(updatingCollegue.getPhotoUrl() != null && updatingCollegue.getEmail() != null){
 				service.updatePhotoUrl(matricule, updatingCollegue.getPhotoUrl());
-				return ResponseEntity.ok("The collegue's photo is up to date!");
-				
-			}else if(updatingCollegue.getEmail() != null){
 				service.updateEmail(matricule, updatingCollegue.getEmail());
-				return ResponseEntity.ok("The collegue's mail is up to date!");
+				return ResponseEntity.ok(updatingCollegue);
 				
-			} else {
+			}else {
 				return ResponseEntity.status(400).body("Please enter the argument you want to update");
 			}
+			
 		}catch(CollegueNotFoundException | InsertException e) {
 			return ResponseEntity.status(400).body(e.getMessage());
 		}

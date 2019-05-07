@@ -2,13 +2,25 @@ package dev.colleguesapi.entite;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+
+@Entity
 public class Collegue {
 
+	@Id
 	private String matricule;
+	@Column (name = "NAME")
 	private String name;
+	@Column (name = "FIRSTNAME")
 	private String firstname;
+	@Column (name = "EMAIL")
 	private String email;
+	@Column (name = "BIRTHDATE")
 	private LocalDate birthdate;
+	@Column (name = "PHOTOURL", length=500)
 	private String photoUrl;
 	
 	
@@ -19,7 +31,7 @@ public class Collegue {
 
 	public Collegue(String name, String firstname, LocalDate birthdate, String email, String photoUrl) {
 		super();
-		this.name = name;
+		this.name = name.toUpperCase();
 		this.firstname = firstname;
 		this.birthdate = birthdate;
 		this.email = email;
@@ -36,7 +48,7 @@ public class Collegue {
 		return name;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.toUpperCase();
 	}
 	public String getFirstname() {
 		return firstname;

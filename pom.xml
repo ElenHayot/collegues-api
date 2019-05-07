@@ -34,15 +34,26 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
   	
-		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
-	<dependency>
-	    <groupId>org.mockito</groupId>
-    	<artifactId>mockito-core</artifactId>
-    	<version>2.26.0</version>
-    	<scope>test</scope>
-	</dependency>
+			<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+		<dependency>
+	    	<groupId>org.mockito</groupId>
+    		<artifactId>mockito-core</artifactId>
+    		<version>2.26.0</version>
+    		<scope>test</scope>
+		</dependency>
+		
+		<!-- Support de Spring Boot pour JPA -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		
+		<!-- Base de données embarquée -->
+		<dependency>
+    		<groupId>com.h2database</groupId>
+    		<artifactId>h2</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -8,59 +8,47 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import dev.colleguesapi.entite.Collegue;
+import dev.colleguesapi.entite.Trombinoscope;
 import dev.colleguesapi.exception.CollegueNotFoundException;
 import dev.colleguesapi.exception.InsertException;
+import dev.colleguesapi.repository.CollegueRepository;
 
 @Service
 public class CollegueService {
-
-	private Map<String, Collegue> data = new HashMap<>();
+	
+	@Autowired 
+	CollegueRepository repo;
 	private LocalDate now = LocalDate.now();
 	
 	public CollegueService() {
-		
-		Collegue col1 = new Collegue("Raph", "Rojies", LocalDate.of(2012, 06, 30), "rojies.raph@society.com", "http://photopath/photo");
-		Collegue col2 = new Collegue("juju", "francois", LocalDate.of(1994, 07, 07), "franc.juju@society.com", "photopath/photo");
-		Collegue col3 = new Collegue("Son", "David", LocalDate.of(1987, 04, 21), "davidson@society.com", "http://photopath/photo");
-				
-		col1.setMatricule(UUID.randomUUID().toString());
-		col2.setMatricule(UUID.randomUUID().toString());
-		col3.setMatricule(UUID.randomUUID().toString());
-		
-		data.put(col1.getMatricule(), col1);
-		data.put(col2.getMatricule(), col2);
-		data.put(col3.getMatricule(), col3);
+		//Constructor
 	}
 	
-	public List<Collegue> findByName(String findName) throws Exception {
+	public List<Collegue> findCollegueByName(String findName) throws Exception {
 		
-		List<Collegue> resultList = new ArrayList<>();
-		
-		for(Map.Entry<String, Collegue> mapentry: data.entrySet()) {
-			if (mapentry.getValue().getName().equalsIgnoreCase(findName))
-				resultList.add(mapentry.getValue());
-		}
-		if(resultList == null || resultList.isEmpty()) {
+		List<Collegue> collegueFound = repo.findByName(findName.toUpperCase());
+		if(collegueFound == null || collegueFound.isEmpty()) {
 			throw new CollegueNotFoundException("Sorry but there's no collegue with such a name");
-		}else{return resultList;}
+		}else{return collegueFound;}
+		
 	}
 	
-	public Collegue findByMatricule(String findMatricule) throws Exception {
+	public Collegue findCollegueByMatricule(String findMatricule) throws Exception {
 		
-		Collegue result = data.get(findMatricule);
-		
-		if(result == null) {
+		Collegue collegueFound = repo.findByMatricule(findMatricule);
+		if(collegueFound == null) {
 			throw new CollegueNotFoundException("Sorry but there's no collegue with such a matricule");
-		}else{return result;}
-		
+		}else{return collegueFound;}
 		
 	}
 	
 	public void addCollegue(Collegue addCollegue) throws Exception {
-		
 		
 		if(addCollegue.getName().length() < 3) {
 			throw new InsertException("Please enter a name that contains more than 3 characters");
@@ -76,15 +64,15 @@ public class CollegueService {
 			throw new InsertException("Sorry but you must be more than 18 to access");
 		}else {
 			addCollegue.setMatricule(UUID.randomUUID().toString());
-			data.put(addCollegue.getMatricule(), addCollegue);
+			repo.save(addCollegue);
 		}
 		
 	}
 	
-	
+	@Transactional
 	public void updateEmail(String matricule, String newEmail) throws Exception {
 		
-		Collegue collegue = findByMatricule(matricule);
+		Collegue collegue = findCollegueByMatricule(matricule);
 		if(!newEmail.contains("@")){
 			throw new InsertException("Please enter a convenient email adress (with a @ character)");
 		}else {
@@ -93,17 +81,33 @@ public class CollegueService {
 		
 	}
 	
-	
+	@Transactional
 	public void updatePhotoUrl(String matricule, String newPhotoUrl) throws Exception {
 		
-		Collegue collegue = findByMatricule(matricule);
-		if(!newPhotoUrl.startsWith("http://")){
+		Collegue collegue = findCollegueByMatricule(matricule);
+		if(!newPhotoUrl.startsWith("http")){
 			throw new InsertException("Please enter a URL path for the photo (http://...)");
 		}else {
 			collegue.setPhotoUrl(newPhotoUrl);
 		}
 		
 	}
+
+	public void setRepo(CollegueRepository repo) {
+		this.repo = repo;
+	}
+
+	public List<Trombinoscope> sendPhoto() {
+		
+		List<Trombinoscope> trombi = new ArrayList<>();;
+		for(Collegue col:repo.findAll()){
+			trombi.add(new Trombinoscope(col.getMatricule(), col.getPhotoUrl()));
+		}
+		return trombi;
+		
+	}
+	
+	
 	
 	
 }
