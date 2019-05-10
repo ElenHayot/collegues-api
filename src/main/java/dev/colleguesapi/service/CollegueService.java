@@ -3,9 +3,8 @@ package dev.colleguesapi.service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -45,6 +44,22 @@ public class CollegueService {
 		if(collegueFound == null) {
 			throw new CollegueNotFoundException("Sorry but there's no collegue with such a matricule");
 		}else{return collegueFound;}
+		
+	}
+	
+	public List<String> findCollegueByEmail(String email) throws Exception {
+		
+		Optional<Collegue> collegueFound = repo.findByEmail(email);
+		List<String> listToReturn = new ArrayList<>();
+		if(collegueFound == null) {
+			throw new CollegueNotFoundException("Oo, no colleague found. Is your email address correct?");
+		}else{
+			listToReturn.add(collegueFound.get().getMatricule());
+			listToReturn.add(collegueFound.get().getName());
+			listToReturn.add(collegueFound.get().getFirstname());
+			listToReturn.addAll(collegueFound.get().getRoles());
+			return listToReturn;
+			}
 		
 	}
 	

@@ -1,6 +1,7 @@
 package dev.colleguesapi.test;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,7 +36,7 @@ public class CollegueServiceTest {
 		expectedEx.expectMessage("Please enter a name that contains");
 
 		Collegue addCollegue = new Collegue("c", "Rojies", LocalDate.of(1966, 06, 30), "rojies.raph@society.com",
-				"http://photopath/photo");
+				"http://photopath/photo", "password", Arrays.asList("USER"));
 		collegueService.addCollegue(addCollegue);
 	}
 
@@ -46,7 +47,7 @@ public class CollegueServiceTest {
 		expectedEx.expectMessage("Please enter a firstname that contains");
 
 		Collegue addCollegue = new Collegue("Raph", "rf", LocalDate.of(1966, 06, 30), "rojies.raph@society.com",
-				"http://photopath/photo");
+				"http://photopath/photo", "password", Arrays.asList("USER"));
 		collegueService.addCollegue(addCollegue);
 	}
 
@@ -57,7 +58,7 @@ public class CollegueServiceTest {
 		expectedEx.expectMessage("Please enter a convenient email");
 
 		Collegue addCollegue = new Collegue("Raph", "klouklou", LocalDate.of(1966, 06, 30), "rojies.raphsociety.com",
-				"http://photopath/photo");
+				"http://photopath/photo", "password", Arrays.asList("USER"));
 		collegueService.addCollegue(addCollegue);
 	}
 
@@ -68,7 +69,7 @@ public class CollegueServiceTest {
 		expectedEx.expectMessage("Please enter a URL path");
 
 		Collegue addCollegue = new Collegue("Raph", "klouklou", LocalDate.of(1966, 06, 30), "rojies.raph@society.com",
-				"ttp://photopath/photo");
+				"ttp://photopath/photo", "password", Arrays.asList("USER"));
 		collegueService.addCollegue(addCollegue);
 	}
 
@@ -79,7 +80,7 @@ public class CollegueServiceTest {
 		expectedEx.expectMessage("Sorry but you must be more than 18");
 
 		Collegue addCollegue = new Collegue("Raph", "klouklou", LocalDate.of(2002, 06, 30), "rojies.raph@society.com",
-				"http://photopath/photo");
+				"http://photopath/photo", "password", Arrays.asList("USER"));
 		collegueService.addCollegue(addCollegue);
 	}
 
@@ -92,7 +93,7 @@ public class CollegueServiceTest {
 		LocalDate nullDate = null;
 
 		Collegue addCollegue = new Collegue("Raph", "klouklou", nullDate, "rojies.raph@society.com",
-				"http://photopath/photo");
+				"http://photopath/photo", "password", Arrays.asList("USER"));
 		collegueService.addCollegue(addCollegue);
 	}
 
@@ -103,7 +104,7 @@ public class CollegueServiceTest {
 		collegueService.setRepo(mock);
 
 		Collegue addCollegue = new Collegue("RAHhhh", "Rojies", LocalDate.of(1966, 06, 30), "rojies.raph@society.com",
-				"http://photopath/photo");
+				"http://photopath/photo", "password", Arrays.asList("USER"));
 		collegueService.addCollegue(addCollegue);
 		
 		Mockito.verify(mock).save(addCollegue);
@@ -118,7 +119,7 @@ public class CollegueServiceTest {
 
 		
 		Collegue updateCollegue = new Collegue("RAHhhh", "Rojies", LocalDate.of(1966, 06, 30),
-				"rojies.raph@society.com", "http://photopath/photo");
+				"rojies.raph@society.com", "http://photopath/photo", "password", Arrays.asList("USER"));
 		collegueService.addCollegue(updateCollegue);
 		collegueService.updateEmail("123456789", "jiji@guy.com");
 
@@ -131,7 +132,7 @@ public class CollegueServiceTest {
 		expectedEx.expectMessage("Please enter a convenient email");
 
 		Mockito.when(mock.findByMatricule("A")).thenReturn( new Collegue("RAHhhh", "Rojies", LocalDate.of(1966, 06, 30),
-				"rojies.raph@society.com", "http://photopath/photo"));
+				"rojies.raph@society.com", "http://photopath/photo", "password", Arrays.asList("USER")));
 		
 		collegueService.updateEmail("A", "jiji.com");
 
@@ -144,7 +145,7 @@ public class CollegueServiceTest {
 		expectedEx.expectMessage("Sorry but there's no collegue");
 
 		Collegue updateCollegue = new Collegue("RAHhhh", "Rojies", LocalDate.of(1966, 06, 30),
-				"rojies.raph@society.com", "http://photopath/photo");
+				"rojies.raph@society.com", "http://photopath/photo", "password", Arrays.asList("USER"));
 		collegueService.addCollegue(updateCollegue);
 		collegueService.updatePhotoUrl("123456789", "http://photo/myPhoto.jpg");
 
@@ -157,7 +158,7 @@ public class CollegueServiceTest {
 		expectedEx.expectMessage("Please enter a URL path");
 
 		Mockito.when(mock.findByMatricule("A")).thenReturn( new Collegue("RAHhhh", "Rojies", LocalDate.of(1966, 06, 30),
-				"rojies.raph@society.com", "http://photopath/photo"));
+				"rojies.raph@society.com", "http://photopath/photo", "password", Arrays.asList("USER")));
 		
 		collegueService.updatePhotoUrl("A", "tp:/foto.jpg");
 

@@ -1,6 +1,7 @@
 package dev.colleguesapi.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,6 +13,8 @@ public interface CollegueRepository extends JpaRepository<Collegue, String> {
 	List<Collegue> findByName(String name);
 	
 	Collegue findByMatricule(String matricule);
+
+	Optional<Collegue> findByEmail(String usermail);
 	
 	
 }
