@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dev.colleguesapi.entite.Collegue;
+import dev.colleguesapi.entite.MeCollegue;
 import dev.colleguesapi.entite.Trombinoscope;
 import dev.colleguesapi.exception.CollegueNotFoundException;
 import dev.colleguesapi.exception.InsertException;
@@ -47,18 +48,22 @@ public class CollegueService {
 		
 	}
 	
-	public List<String> findCollegueByEmail(String email) throws Exception {
+	public MeCollegue findCollegueByEmail(String email) throws Exception {
 		
 		Optional<Collegue> collegueFound = repo.findByEmail(email);
-		List<String> listToReturn = new ArrayList<>();
+		
+		
 		if(collegueFound == null) {
 			throw new CollegueNotFoundException("Oo, no colleague found. Is your email address correct?");
 		}else{
-			listToReturn.add(collegueFound.get().getMatricule());
-			listToReturn.add(collegueFound.get().getName());
-			listToReturn.add(collegueFound.get().getFirstname());
-			listToReturn.addAll(collegueFound.get().getRoles());
-			return listToReturn;
+			MeCollegue collegueToReturn = new MeCollegue(
+				collegueFound.get().getMatricule(), 
+				collegueFound.get().getName(), 
+				collegueFound.get().getFirstname(), 
+				collegueFound.get().getRoles(),
+				collegueFound.get().getPhotoUrl(),
+				collegueFound.get().getEmail());
+			return collegueToReturn;
 			}
 		
 	}
